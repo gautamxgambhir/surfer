@@ -1,21 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from urllib.parse import urlparse
-import together
 import requests
 from bs4 import BeautifulSoup
 from transformers import BartForConditionalGeneration, BartTokenizer
 
 app = Flask(__name__)
 CORS(app)
-
-with open("api_key.txt","r") as api_key_file:
-   key = api_key_file.read()
-
-if key == '':
-    print("No API key found in api_key.txt")
-else:
-    client = together.Together(api_key=key)
 
 # Load BART model and tokenizer for webpage content summarization
 model_name = "facebook/bart-large-cnn"
@@ -36,13 +27,71 @@ def extract_text_from_webpage(url):
     text_content = ' '.join([para.get_text() for para in paragraphs])
     return text_content
 
+def get_together_client(api_key):
+    """Create a Together AI client with the provided API key."""
+    import together
+    return together.Together(api_key=api_key)
+
+def call_llm(api_key, service, model_id, prompt):
+    """
+    Route the LLM call to the correct provider based on the service name.
+    Supported services: together, openai, groq, anthropic
+    """
+    service = (service or "together").lower()
+
+    if service == "together":
+        import together
+        client = together.Together(api_key=api_key)
+        completion = client.chat.completions.create(
+            model=model_id or "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return completion.choices[0].message.content.strip()
+
+    elif service == "openai":
+        from openai import OpenAI
+        client = OpenAI(api_key=api_key)
+        completion = client.chat.completions.create(
+            model=model_id or "gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return completion.choices[0].message.content.strip()
+
+    elif service == "groq":
+        from groq import Groq
+        client = Groq(api_key=api_key)
+        completion = client.chat.completions.create(
+            model=model_id or "llama3-8b-8192",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return completion.choices[0].message.content.strip()
+
+    elif service == "anthropic":
+        import anthropic
+        client = anthropic.Anthropic(api_key=api_key)
+        message = client.messages.create(
+            model=model_id or "claude-3-haiku-20240307",
+            max_tokens=512,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return message.content[0].text.strip()
+
+    else:
+        raise ValueError(f"Unsupported service: '{service}'. Choose from: together, openai, groq, anthropic")
+
 @app.route("/website_info", methods=["POST"])
 def website_info():
     data = request.get_json()
     url = data.get("url")
+    api_key = data.get("api_key", "").strip()
+    service = data.get("service", "together")
+    model_id = data.get("model_id", "")
 
     if not url:
         return jsonify({'error': 'URL not provided'}), 400
+
+    if not api_key:
+        return jsonify({'error': 'API key not provided. Please add your API key in the extension settings.'}), 400
 
     try:
         parsed_url = urlparse(url)
@@ -55,9 +104,9 @@ def website_info():
             website_name = domain_parts[-2].title()
             formatted_website_name = website_name.replace('-', ' ').title()
             prompt = f"Provide a 2-line summary of the website {formatted_website_name}."
-            completion = client.chat.completions.create(model="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo", messages=[{"role": "user", "content": prompt}])
-            summary_text = completion.choices[0].message.content.replace('\n', '').strip()
-            return jsonify({'summary': summary_text})  # Return as JSON
+            summary_text = call_llm(api_key, service, model_id, prompt)
+            summary_text = summary_text.replace('\n', '').strip()
+            return jsonify({'summary': summary_text})
         else:
             return jsonify({"error": "Invalid domain"}), 400
 
@@ -68,6 +117,8 @@ def website_info():
 def summarize_webpage():
     data = request.get_json()
     url = data.get("url")
+    # api_key not required for local BART summarization, but accepted for future use
+    # api_key = data.get("api_key", "").strip()
 
     if not url:
         return jsonify({'error': 'URL not provided'}), 400
@@ -78,7 +129,7 @@ def summarize_webpage():
             return jsonify({'error': 'No content found on the webpage.'}), 400
 
         summary = summarize_text(webpage_text)
-        return jsonify({'summary': summary})  # Return as JSON
+        return jsonify({'summary': summary})
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500

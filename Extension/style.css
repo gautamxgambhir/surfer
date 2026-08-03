@@ -12,6 +12,13 @@
   --summary-bg-color-hover: #c6c6c6;
   --icon-fill: #5b5b5b;
   --icon-fill-hover: #2c2c2c;
+  --input-bg: #f1f1f1;
+  --input-border: #cccccc;
+  --success-color: #22a855;
+  --error-color: #e03e3e;
+  --warning-bg: #fff8e1;
+  --warning-text: #b45309;
+  --warning-border: #fcd34d;
 }
 
 .dark-theme {
@@ -25,6 +32,11 @@
   --summary-bg-color: #414141;
   --icon-fill: #8a8a8a;
   --icon-fill-hover: rgb(197, 197, 197);
+  --input-bg: #444444;
+  --input-border: #666666;
+  --warning-bg: #3a2e00;
+  --warning-text: #fcd34d;
+  --warning-border: #b45309;
 }
 
 * {
@@ -239,4 +251,132 @@
 
 .blur {
   filter: blur(5px);
+}
+
+/* ── Settings toggle button ─────────────────────────────────────────── */
+.settings-toggle {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  color: var(--icon-fill);
+  transition: color 0.3s;
+}
+
+.settings-toggle:is(:hover, :focus-visible) {
+  color: var(--icon-fill-hover);
+}
+
+/* ── Settings view ──────────────────────────────────────────────────── */
+#settings-view {
+  width: 100%;
+}
+
+.settings-title {
+  font-size: 30px;
+  color: var(--title-color);
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 700;
+  text-align: center;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+  margin: 0 auto;
+  gap: 6px;
+  padding-bottom: 16px;
+}
+
+.settings-label {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-top: 8px;
+}
+
+.settings-hint {
+  font-weight: 400;
+  font-size: 12px;
+  opacity: 0.65;
+}
+
+.settings-input,
+.settings-select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: 1.5px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-family: "Ubuntu", sans-serif;
+  font-size: 14px;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.settings-input:focus,
+.settings-select:focus {
+  border-color: var(--button-bg-color);
+}
+
+.api-key-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.api-key-wrapper .settings-input {
+  padding-right: 36px;
+}
+
+.toggle-key-btn {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--icon-fill);
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-key-btn:hover {
+  color: var(--icon-fill-hover);
+}
+
+.settings-save-btn {
+  margin-top: 14px;
+}
+
+.settings-status {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 14px;
+  text-align: center;
+  min-height: 20px;
+}
+
+/* ── No API key warning banner ──────────────────────────────────────── */
+.warning-banner {
+  width: 85%;
+  margin: 0 auto 14px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  background-color: var(--warning-bg);
+  color: var(--warning-text);
+  border: 1px solid var(--warning-border);
+  font-family: "Ubuntu", sans-serif;
+  font-size: 13px;
+  text-align: center;
+  cursor: pointer;
 }

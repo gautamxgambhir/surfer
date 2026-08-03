@@ -14,73 +14,91 @@
 
 ## What is it?
 
-Surfer is an AI-powered Chrome extension designed to make web browsing faster and smarter by summarizing both website overviews and webpage content. 
-Whether you're doing in-depth research or just exploring a new site, 
+Surfer is an AI-powered Chrome extension designed to make web browsing faster and smarter by summarizing both website overviews and webpage content.
+Whether you're doing in-depth research or just exploring a new site,
 Surfer delivers concise summaries tailored to your needs.
-With Surfer, you can :
+With Surfer, you can:
  - Get brief website summaries with just two lines of information.
  - Generate detailed webpage content summaries from articles, blogs, and more.
 
 ## Main Features
 
-Here’s what makes **Surfer** essential :
+ - **Website Information Summarization**: Receive a 2-line overview of any website for a quick glance at its purpose and content.
+ - **Webpage Content Summarization**: Get comprehensive summaries of webpage content in a concise format.
+ - **Bring Your Own API Key**: No shared key needed. Add your own API key directly in the extension's settings panel — it's stored locally in your browser and never sent anywhere except the chosen AI provider.
+ - **Multi-Provider Support**: Works with **Together AI**, **OpenAI**, **Groq**, and **Anthropic**. Pick the service you already have access to.
+ - **Custom Model ID**: Override the default model for any provider with any model ID you prefer.
+ - **Dark/Light Theme Toggle**: Switch between light and dark modes.
+ - **Copy Summary**: Click on any generated summary to copy it to the clipboard.
 
- - **Website Information Summarization** : Receive a 2-line overview of any website for a quick glance at its purpose and content.
- - **Webpage Content Summarization** : Get comprehensive summaries of webpage content in a concise format. 
- - **Real-time API Integration** : Surfer uses Together API and state-of-the-art models like BART for real-time summarization. 
+## New in v1.1
 
-## New Features
-
-- **Dark/Light Theme Toggle**: Surfer now includes a theme toggle button, allowing users to switch between light and dark modes for a comfortable browsing experience.
-- **Improved UI**: The UI has been enhanced for better and a more intuitive user experience. All elements, including the radio buttons and submit button, are now more user-friendly and visually appealing.
-- **Copy Summary**: Now, to make it easier for user to copy the generated summary, The user can simply click on the Summary to copy it to the clipoard.
-
+- **Bring Your Own API Key** — no more shared `api_key.txt`. Each user provides their own key via the settings panel (⚙️).
+- **Multi-provider LLM support** — Together AI, OpenAI, Groq, and Anthropic all work out of the box.
+- **Custom model IDs** — override the default model per provider.
 
 ## Where to get it?
 
-The extension is hosted on GitHub at : https://github.com/gautamxgambhir/surferr
+The extension is hosted on GitHub at: https://github.com/gautamxgambhir/surferr
 
 ## Installation and Setup
 
-#### 1. Clone the repository :
-``` 
-git clone https://github.com/gautamxgambhir/Surferr.git 
+#### 1. Clone the repository:
+```
+git clone https://github.com/gautamxgambhir/Surferr.git
 ```
 
-#### 2. Backend setup (Make sure the ```app.py``` server is running) :
+#### 2. Backend setup (Make sure `app.py` is running):
  - Navigate to the project directory.
- - Install the required Python dependencies :
+ - Install the required Python dependencies:
     ```
     pip install -r requirements.txt
     ```
- - Make sure to enter your [Together AI](https://www.together.ai/) API key in ```api_key.txt```.
-
- - Start the Flask server :
+ - Start the Flask server:
     ```
     python app.py
     ```
-#### 2. Load the extension in Chrome :
+   > No `api_key.txt` needed anymore — the key is supplied by the extension at runtime.
+
+#### 3. Load the extension in Chrome:
  - Go to **chrome://extensions/** in your browser.
  - Enable **Developer Mode** in the top-right corner.
- - Click **Load unpacked** and select the ```surfer``` directory.
+ - Click **Load unpacked** and select the `Extension` directory.
+
+#### 4. Add your API key:
+ - Click the ⚙️ (gear) icon in the Surfer popup.
+ - Select your **AI Service** (Together AI, OpenAI, Groq, or Anthropic).
+ - Optionally enter a **Model ID** to override the default.
+ - Paste your **API Key** and click **Save**.
+
+Your key is stored only in your browser's local extension storage and sent only to the backend running on your own machine.
+
+## Supported AI Services & Default Models
+
+| Service     | Default Model                                    | Get an API Key |
+|-------------|--------------------------------------------------|----------------|
+| Together AI | `meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo`   | https://www.together.ai/ |
+| OpenAI      | `gpt-4o-mini`                                    | https://platform.openai.com/ |
+| Groq        | `llama3-8b-8192`                                 | https://console.groq.com/ |
+| Anthropic   | `claude-3-haiku-20240307`                        | https://www.anthropic.com/ |
 
 ## Usage
-Once installed, Surfer can summarize websites and webpage content directly from your Chrome browser :
 
-[Download Video Tutorial for Surfer Usage](https://drive.google.com/file/d/1YHjVjUMQOIx2S4loCVSnGJFuki_ft8k0/view?usp=sharing)
+Once installed and configured, Surfer summarizes websites and webpage content directly from your Chrome browser.
 
-#### 1. Open the Surfer Extension :
+#### 1. Open the Surfer Extension:
  - Click on the Surfer icon in your Chrome toolbar.
-#### 2. Select a Radio Button :
- - **Website Information** : Summarizes the website's core details.
-- **Webpage Content Summary** : Summarizes the visible content of the webpage you're currently on.
-#### 3. Submit Button :
- - Click **Submit** to get the summary of the webpage or website information directly in the extension's popup.
+#### 2. Select a Radio Button:
+ - **Website Information**: Summarizes the website's core details.
+ - **Webpage Content Summary**: Summarizes the visible content of the webpage you're on.
+#### 3. Submit:
+ - Click **Submit** to get the summary.
 
 ## Dependencies
- - [**Flask** : Backend server for handling summarization requests.](https://flask.palletsprojects.com/en/3.0.x/)
- - [**Together API** : Real-time AI API for generating summaries.](https://www.together.ai/)
- - [**BART Model** : Summarization model for content extraction.](https://huggingface.co/docs/transformers/en/model_doc/bart)
+ - [**Flask**: Backend server for handling summarization requests.](https://flask.palletsprojects.com/en/3.0.x/)
+ - [**Together API**: Real-time AI API for generating summaries.](https://www.together.ai/)
+ - [**BART Model**: Summarization model for content extraction.](https://huggingface.co/docs/transformers/en/model_doc/bart)
+ - **OpenAI / Groq / Anthropic** Python SDKs (optional, install only the ones you need)
 
 ## Package
 
@@ -97,64 +115,18 @@ Once installed, Surfer can summarize websites and webpage content directly from 
 #### Package Features
  - Summarize any text
  - Extract text from a webpage
- - Summarize a webpage from a URl
+ - Summarize a webpage from a URL
  - Get website information summary
 
 ##### Setup of Package
 
-```
+```python
 from surferr import Surfer, version
 
-# Make sure to provide your API key of Together AI
+# Provide your API key
 API_KEY = "YOUR_API_KEY"
 
-# Create an instance of the Surfer class by providing the API key
 surfer = Surfer(api_key=API_KEY)
-```
-
-##### Check Version
-
-```
-# Display the current version of the package
-print(version())
-```
-
-##### Summarize a block of text
-
-```
-text = """
-YOUR_TEXT
-"""
-# Call the summarize_text method to generate summary
-text_summary = surfer.summarize_text(text)
-print(text_summary)
-```
-
-##### Extracting text content from a webpage
-
-```
-# Make sure to provide the URL
-url = "https://en.wikipedia.org/wiki/Artificial_intelligence"
-
-# Call the extract_text_from_webpage method to fetch and extract text content from the webpage
-webpage_text = surfer.extract_text_from_webpage(url)
-print(webpage_text)
-```
-
-##### Summarizing a webpage's content
-
-```
-# Call the summarize_webpage method to generate a summary of the webpage's content
-webpage_summary = surfer.summarize_webpage(url)
-print(webpage_summary)
-```
-
-##### Getting Information about a website 
-
-```
-# Use the website_info_summary method to get summary of the website
-website_info = surfer.website_info_summary(url)
-print(website_info)
 ```
 
 ## Contact
