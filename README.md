@@ -25,7 +25,7 @@ With Surfer, you can:
  - **Website Information Summarization**: Receive a 2-line overview of any website for a quick glance at its purpose and content.
  - **Webpage Content Summarization**: Get comprehensive summaries of webpage content in a concise format.
  - **Bring Your Own API Key**: Surfer does not include or require any shared API key. You bring your own key from whichever AI provider you use, enter it in the extension settings, and you're good to go.
- - **Multi-Provider Support**: Works with **Together AI**, **OpenAI**, **Groq**, and **Anthropic**. Pick the service you already have access to.
+ - **Multi-Provider Support**: Works with **Together AI**, **OpenAI**, **Groq**, **Anthropic**, and **Google Gemini**. Pick the service you already have access to.
  - **Custom Model ID**: Override the default model for any provider with any model ID you prefer.
  - **Dark/Light Theme Toggle**: Switch between light and dark modes.
  - **Copy Summary**: Click on any generated summary to copy it to the clipboard.
@@ -33,7 +33,7 @@ With Surfer, you can:
 ## New in v1.1
 
 - **Bring Your Own API Key** — Surfer no longer ships with or depends on any API key. Each user adds their own key via the settings panel (⚙️). The key is stored only in your browser's local storage.
-- **Multi-provider LLM support** — Together AI, OpenAI, Groq, and Anthropic all work out of the box.
+- **Multi-provider LLM support** — Together AI, OpenAI, Groq, Anthropic, and Google Gemini all work out of the box.
 - **Custom model IDs** — override the default model per provider.
 
 ## Where to get it?
@@ -81,6 +81,7 @@ You need an API key from **one** of the following providers:
 | OpenAI      | `gpt-4o-mini`                                    | https://platform.openai.com/ |
 | Groq        | `llama3-8b-8192`                                 | https://console.groq.com/ |
 | Anthropic   | `claude-3-haiku-20240307`                        | https://www.anthropic.com/ |
+| Google Gemini | `gemini-1.5-flash`                             | https://aistudio.google.com/app/apikey |
 
 Install only the SDK(s) you need. By default `requirements.txt` includes Together AI. Uncomment the relevant line(s) for other providers.
 
@@ -99,7 +100,7 @@ Once installed and configured, Surfer summarizes websites and webpage content di
 ## Dependencies
  - [**Flask**: Backend server for handling summarization requests.](https://flask.palletsprojects.com/en/3.0.x/)
  - [**BART Model**: Local summarization model for webpage content extraction.](https://huggingface.co/docs/transformers/en/model_doc/bart)
- - **Your AI provider's Python SDK** — Together AI, OpenAI, Groq, or Anthropic (install only the one you use).
+ - **Your AI provider's Python SDK** — Together AI, OpenAI, Groq, Anthropic, or Google Gemini (install only the one you use).
 
 ## Package
 

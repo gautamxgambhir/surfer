@@ -76,8 +76,15 @@ def call_llm(api_key, service, model_id, prompt):
         )
         return message.content[0].text.strip()
 
+    elif service == "gemini":
+        import google.generativeai as genai
+        genai.configure(api_key=api_key)
+        gemini_model = genai.GenerativeModel(model_id or "gemini-1.5-flash")
+        response = gemini_model.generate_content(prompt)
+        return response.text.strip()
+
     else:
-        raise ValueError(f"Unsupported service: '{service}'. Choose from: together, openai, groq, anthropic")
+        raise ValueError(f"Unsupported service: '{service}'. Choose from: together, openai, groq, anthropic, gemini")
 
 @app.route("/website_info", methods=["POST"])
 def website_info():
