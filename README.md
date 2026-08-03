@@ -9,7 +9,6 @@
 ![Python](https://img.shields.io/badge/python-3.12-blue)
 ![Status](https://img.shields.io/badge/status-stable-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-red)
-![Together-AI](https://img.shields.io/badge/Together%20AI-0f6fff)
 ![BART](https://img.shields.io/badge/BART-8A2BE2)
 
 ## What is it?
@@ -25,7 +24,7 @@ With Surfer, you can:
 
  - **Website Information Summarization**: Receive a 2-line overview of any website for a quick glance at its purpose and content.
  - **Webpage Content Summarization**: Get comprehensive summaries of webpage content in a concise format.
- - **Bring Your Own API Key**: No shared key needed. Add your own API key directly in the extension's settings panel — it's stored locally in your browser and never sent anywhere except the chosen AI provider.
+ - **Bring Your Own API Key**: Surfer does not include or require any shared API key. You bring your own key from whichever AI provider you use, enter it in the extension settings, and you're good to go.
  - **Multi-Provider Support**: Works with **Together AI**, **OpenAI**, **Groq**, and **Anthropic**. Pick the service you already have access to.
  - **Custom Model ID**: Override the default model for any provider with any model ID you prefer.
  - **Dark/Light Theme Toggle**: Switch between light and dark modes.
@@ -33,7 +32,7 @@ With Surfer, you can:
 
 ## New in v1.1
 
-- **Bring Your Own API Key** — no more shared `api_key.txt`. Each user provides their own key via the settings panel (⚙️).
+- **Bring Your Own API Key** — Surfer no longer ships with or depends on any API key. Each user adds their own key via the settings panel (⚙️). The key is stored only in your browser's local storage.
 - **Multi-provider LLM support** — Together AI, OpenAI, Groq, and Anthropic all work out of the box.
 - **Custom model IDs** — override the default model per provider.
 
@@ -58,7 +57,6 @@ git clone https://github.com/gautamxgambhir/Surferr.git
     ```
     python app.py
     ```
-   > No `api_key.txt` needed anymore — the key is supplied by the extension at runtime.
 
 #### 3. Load the extension in Chrome:
  - Go to **chrome://extensions/** in your browser.
@@ -68,12 +66,14 @@ git clone https://github.com/gautamxgambhir/Surferr.git
 #### 4. Add your API key:
  - Click the ⚙️ (gear) icon in the Surfer popup.
  - Select your **AI Service** (Together AI, OpenAI, Groq, or Anthropic).
- - Optionally enter a **Model ID** to override the default.
+ - Optionally enter a **Model ID** to override the default for that service.
  - Paste your **API Key** and click **Save**.
 
-Your key is stored only in your browser's local extension storage and sent only to the backend running on your own machine.
+> Your key is stored only in your browser's local extension storage. It is sent exclusively to the Flask backend running on your own machine — never to any third party directly from the extension.
 
 ## Supported AI Services & Default Models
+
+You need an API key from **one** of the following providers:
 
 | Service     | Default Model                                    | Get an API Key |
 |-------------|--------------------------------------------------|----------------|
@@ -82,6 +82,8 @@ Your key is stored only in your browser's local extension storage and sent only 
 | Groq        | `llama3-8b-8192`                                 | https://console.groq.com/ |
 | Anthropic   | `claude-3-haiku-20240307`                        | https://www.anthropic.com/ |
 
+Install only the SDK(s) you need. By default `requirements.txt` includes Together AI. Uncomment the relevant line(s) for other providers.
+
 ## Usage
 
 Once installed and configured, Surfer summarizes websites and webpage content directly from your Chrome browser.
@@ -89,16 +91,15 @@ Once installed and configured, Surfer summarizes websites and webpage content di
 #### 1. Open the Surfer Extension:
  - Click on the Surfer icon in your Chrome toolbar.
 #### 2. Select a Radio Button:
- - **Website Information**: Summarizes the website's core details.
- - **Webpage Content Summary**: Summarizes the visible content of the webpage you're on.
+ - **Website Information**: Summarizes the website's core details using your chosen LLM.
+ - **Webpage Content Summary**: Summarizes the visible content of the webpage you're on using the local BART model (no API key required for this).
 #### 3. Submit:
  - Click **Submit** to get the summary.
 
 ## Dependencies
  - [**Flask**: Backend server for handling summarization requests.](https://flask.palletsprojects.com/en/3.0.x/)
- - [**Together API**: Real-time AI API for generating summaries.](https://www.together.ai/)
- - [**BART Model**: Summarization model for content extraction.](https://huggingface.co/docs/transformers/en/model_doc/bart)
- - **OpenAI / Groq / Anthropic** Python SDKs (optional, install only the ones you need)
+ - [**BART Model**: Local summarization model for webpage content extraction.](https://huggingface.co/docs/transformers/en/model_doc/bart)
+ - **Your AI provider's Python SDK** — Together AI, OpenAI, Groq, or Anthropic (install only the one you use).
 
 ## Package
 
@@ -123,7 +124,7 @@ Once installed and configured, Surfer summarizes websites and webpage content di
 ```python
 from surferr import Surfer, version
 
-# Provide your API key
+# Provide your own API key
 API_KEY = "YOUR_API_KEY"
 
 surfer = Surfer(api_key=API_KEY)
